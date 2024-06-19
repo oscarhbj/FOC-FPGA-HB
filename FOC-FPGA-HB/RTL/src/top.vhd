@@ -100,7 +100,6 @@ architecture RTL of top is
 	signal polar_amp_array	: polar_amp_arr;
 	signal polar_angle_array: polar_ang_arr;
 
-
 	--muxed signals
 	signal polar_angle_mux : STD_LOGIC_VECTOR(work.config.angle_bitdepth-1 downto 0);
 	signal polar_amp_mux   : STD_LOGIC_VECTOR(work.config.amp_width-1 downto 0);
@@ -112,8 +111,6 @@ architecture RTL of top is
 	signal enable_svpwm_vec	: STD_LOGIC_VECTOR(motors-1 downto 0);
 	signal svpwm_angle_lut	: unsigned(sin_lut_length_bits-3 downto 0);
 	
-
-
 	--SIN LUT with enable for choosing what value to get.
 	signal angle_inv_park		: unsigned(sin_lut_length_bits-1 downto 0);
 	signal angle_park_en		: STD_LOGIC;
@@ -208,6 +205,8 @@ begin
 	end if;
 end process;
 
+
+--counter for startup sequence and sends out enable signals during startup.
 init : process(clk_main, rst) is 
 begin
 	if rising_edge(clk_main) then
@@ -225,6 +224,8 @@ begin
 	end if;
 end process;
 
+
+--Synchronization of angles and controllers for pipelined logic.
 update_indexed_values :process(clk_main, id_syncronized,en_out_pi_vector,enable_polar) is
 begin
 	if rising_edge(clk_main) then

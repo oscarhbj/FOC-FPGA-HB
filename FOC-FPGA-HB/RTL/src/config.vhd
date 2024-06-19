@@ -3,6 +3,7 @@ library IEEE;
 	use IEEE.numeric_std.all;
 
 package config is
+--Configuration file. here are some of the parameters that can be adjusted inside the code.
 
 --Constants for code:
 	constant motors 			: positive := 2; --amount of motors

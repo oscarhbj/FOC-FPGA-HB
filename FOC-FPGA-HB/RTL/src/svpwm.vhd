@@ -5,6 +5,8 @@ library IEEE;
 
 entity svpwm is
 
+--FINDS what SVPWM SIGNAL TO GENERATE AND SETS IT.
+
 generic(
 	angle_width	: integer := work.config.angle_bitdepth;
 	amp_width	: integer := work.config.amp_width;
@@ -13,15 +15,13 @@ generic(
 	sin_bits	: integer := work.config.sin_harmonic_bits;
 	sin_lut_idx	: integer := work.config.sin_lut_length_bits-2;
 	shift_amp	: integer := 3 --we use the top bits. 2048=0x800. look at num [15 downto 3] (12 bits) where the 11 bottom bits of those 12 are used for pwm. if number is over 2048, we round down to 2048. 
-	
-
 );
 
 port(
 	clk_main, clk_pwm	: in STD_LOGIC;
 	rst			: in STD_LOGIC;
 	en_str			: in STD_LOGIC;
-	theta			: in STD_LOGIC_VECTOR(angle_width-1 downto 0);
+	theta			: in STD_LOGIC_VECTOR(angle_width-1 downto 0); --this is PHI, however it is an angle...
 	amplitude		: in STD_LOGIC_VECTOR(amp_width-1 downto 0); --looks at value 14 downto 4. (if idx 15 is used, it is changed to max_amp)
 	a_low,a_high		: out STD_LOGIC;
 	b_low,b_high		: out STD_LOGIC;

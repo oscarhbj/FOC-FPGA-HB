@@ -3,7 +3,10 @@ library IEEE;
 	use IEEE.numeric_std.all;
 	use work.config.all;
 	use std.textio.all; --lut
---The cordic algorithm will find the angle and the amplitude of a vector.
+
+--Calculates the angle and amplitude of the input signal via the cordic algorithm.
+--INPUTS X,Y and enable.
+--Output amplitude (rho) and angle (phi).
 
 entity cordic_angle_abs is
 generic(
@@ -50,11 +53,12 @@ begin
 	return angle_vector;
 end function;
 
+--constants and singles that uses the impure function mentioned above
 constant angle_reg		: t_angle_pre :=init_angles;
 signal 		angle_reg_copy	: t_angle_pre :=init_angles;
 
+
 begin
-	
 	process(clk) is
 	variable angle_std	: STD_LOGIC_VECTOR(lut_angle_width downto 0);
 	variable amp_mid_res	: signed(input_width+10-1 downto 0);
@@ -71,6 +75,7 @@ begin
 			angle_register(0)<=to_signed(0,angle_register(0)'length);
 			x_null(x_null'length-1 downto 1) <= x_null(x_null'length-2 downto 0);
 
+			--iterative approach to move the vector closer to the x axis.
 			for i in 1 to iterations loop
 				if y_register(i-1)(input_width) = '0' then --sign bit
 					x_register(i) 		<= x_register(i-1) + resize(y_register(i-1)(input_width+1 downto (i-1)), y_register(i)'length);
@@ -82,12 +87,10 @@ begin
 					angle_register(i) 	<= angle_register(i-1) - to_integer(angle_reg(i-1));
 				end if;
 			end loop;
-			--1.108567337295119 = 71/(2^6)
-			--0.6072533210998718 => 
-			--39797/(2^16) = [0.607254028] 		0.000226% større
-			-- 311/(2^9) = [0.607421875] 		0.0278% større (BRUKES NÅ)
+
+			--K_10 = 0.6072533210998718 => 311/(2^9) = [0.607421875]. 		0.0278% bigger that reality
 			
-			--angle_convertion:
+			--Convert the angle so it spans 360 degrees. Also normalize the amplitude by multiplication and shifting:
 			if x_sign_register(iterations) = '0' then
 				if angle_register(angle_register'length-1)(angle_register(0)'length-1)='0' then --L (0-90)
 					angle_std := STD_LOGIC_VECTOR(ABS(angle_register(angle_register'length-1)));
@@ -105,10 +108,10 @@ begin
 					angle_out(angle_out'length-1 downto angle_out'length -2) <= "10";
 				end if;
 			end if;
+			--set output
 			angle_out(angle_out'length-3 downto 0) <= angle_std(angle_std'length-2 downto angle_std'length-angle_out'length+1);
 			amp_mid_res := resize(x_register(iterations)*311,input_width+10);
 			amplitude_out <= STD_LOGIC_VECTOR(resize(amp_mid_res(amp_mid_res'length-1 downto 9),amplitude_out'length));			
-			--amplitude_out	<= STD_LOGIC_VECTOR(resize((resize(x_register(iterations),input_width+10) * 311)/(2**9),amplitude_out'length));
 			end if;
 	end process;
 end architecture RTL;

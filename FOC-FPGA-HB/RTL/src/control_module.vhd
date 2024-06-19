@@ -51,6 +51,8 @@ begin
 
 init_control : process (init_str, rst_all, clk, counter_init) is
 begin
+	--initialization procedure for setting reset signals for a set amount of time for different modules. 
+	--has reset enabeled for "cycles_setup" clock cycles.
 	if rising_edge(clk) then
 		--all reset signals follows the rst_all input.
 		en_override_synced <= en_override;

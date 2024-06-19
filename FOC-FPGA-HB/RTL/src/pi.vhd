@@ -4,7 +4,7 @@ library IEEE;
 	use work.config.all;
 
 --its just a pi controller.
---But i kind of made it complicated because ... yeah... sooooo.. enjoy some shitty code
+--This controller should be replaced.  to optimize chip consumption one would want a shared controller instead of independent controllers. As for this implementation we have not shared them, and one can therefore replace the controller on a per motor basis.
 entity pi is
 generic(
 	input_width	: integer := 	work.config.dq_domain_bits;

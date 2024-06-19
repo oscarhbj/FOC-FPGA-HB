@@ -2,6 +2,10 @@ library IEEE;
  	use IEEE.std_logic_1164.all;
 	use IEEE.numeric_std.all;
 
+--Code for measurment of angle from incremental encoder.
+--input: CH_A, CH_B, CH_I
+--CH_A and CH_B: two square waves with halv a wave ofset from each other.
+--CH_I : has one pulse every full mechanical rotation.
 
 entity encoder is
 	generic(
@@ -19,7 +23,7 @@ entity encoder is
 	);
 end entity;
 --Takes in CH_A, CH_B  and CH_I
-
+--returns angle
 
 architecture RTL of encoder is
 	constant k	: integer :=839;--number that we multiply with and shift down to make it span 16 bits; --105
@@ -43,8 +47,6 @@ begin
 	begin
 		if rising_edge(clk) then
 			if rst = '1' then
-				--prev_CH(1)	<= CH_A;
-				--prev_CH(0)	<= CH_B;
 				CH_IAB <= CH_I & CH_A & CH_B; --Force input signals
 				prev_ch <= CH_A & CH_B;
 				CH_l1 <= CH_I & CH_A & CH_B;
@@ -55,14 +57,11 @@ begin
 				configured_offset <= '0';
 				
 			else 
-				--prev_CH(1)	<= CH_A; --(could be prev_ch <= CH_A & CH_B;)
-				--prev_CH(0)	<= CH_B;
 				CH_IAB <= CH_I & CH_A & CH_B;
 				CH_l1 <= CH_IAB;
-				if CH_IAB = CH_l1 then --if we have two of the same in a row we are certain that its not noise.
+				if CH_IAB = CH_l1 then --if we have two of the same in a row we are certain that it is not noise.
 				    current_CH <= CH_l1;
 				end if;
-				--this worked :)
 
 				prev_ch <= unsigned(current_CH(1 downto 0));
                 valid_dir := '0';
@@ -140,8 +139,7 @@ begin
 					end if;
 				end if;
 				
-				--set the output angle
-				--angle <= resize(counter,angle'length); --RAW output
+				--set output
 				counter_k := resize(resize(counter,counter_k'length) * k,counter_k'length);
 				angle <= counter_k(counter_k'length -1 downto k_offset);
 			end if;
