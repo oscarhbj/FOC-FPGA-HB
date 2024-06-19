@@ -1,0 +1,8 @@
+authors:
+  - family-names: Bjørnstad
+    given-names: Oscar Hæstad
+title: Scalable Multi-Axis FOC on FPGA for Permanent Magnet Synchronous Motors
+date-released: '2024-05-15'
+repository-code: https://github.com/oscarhbj/FOC-FPGA-HB
+university: University of Oslo
+department: Department of Informatics
