@@ -7,7 +7,7 @@ Software Version: Vivado 2020.2, Vitis 2020.2
 
 Brief description of project: The project includes a Field-Oriented Control Core that can control multiple BLDC motors. The core utilizes pipelining to share logic and optimize the system's scalability. 
 
-Video: https://youtu.be/ibGOrkTTE68?si=abFvzFF54GtDmxi3
+Video: https://youtu.be/ibGOrkTTE68
  
 
 Description of archive (explain directory structure, documents and source files):
