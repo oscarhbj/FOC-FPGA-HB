@@ -20,6 +20,8 @@ Description of archive (explain directory structure, documents and source files)
 |  └─ Hardware.md    # Hardware utilized in testing of FOC core
 ├─ .gitignore        # Gitignore file
 ├─ LICENSE           # MIT License
+├─ Master_Thesis.pdf # Master thesis
+├─ Short_report_FOC  # Short project report. Fore complete data, look at the Thesis
 └─ README.md         # Readme file containing information about the current repo
 ```
 
