@@ -33,12 +33,14 @@ Step 2: Import the vhdl files and ".txt" files for lookup tables.
 
 Step 3: Select VHDL 2008 as the programming language.
 
-Step 4: Add compatibility layer around the core.
+Step 4: Configure the design in the confuiguration file. Here the special datatypes for signals are defined and can be used for connecting to compatibility layers.
+
+Step 5: Add compatibility layer around the core.
 (If the SoC is to be used a Block design in Vivado would need implementation)
 
-Step 5: Constrain the design
+Step 6: Constrain the design
 
-Step 6: Generate bitstream.
+Step 7: Generate bitstream.
 
 The example included works for 2 BLDC motors on a the TE0720-04-61C33MAS.
 The TCL file does not work as there was some problems with relative path during the creation of the script.
